@@ -10,13 +10,15 @@
    dotnet restore
 
 3. Run migrations to set up the database:
+
    dotnet ef migrations add InitialCreate
+   
    dotnet ef database update
 
-4. Run the application:
+5. Run the application:
    dotnet run
 
-5. Open the browser:
+6. Open the browser:
    http://localhost:5000
 
 ## Setting up the Database
