@@ -1,0 +1,63 @@
+@model IEnumerable<LibraryManagement.Models.LibraryBranch>
+
+<div class="container">
+    <h3 class="text-center">Add New Library Branch</h3>
+    <form asp-action="Create" method="post">
+        <div class="form-row d-flex justify-content-between">
+            <div class="col-md-4">
+                <label>Branch Name</label>
+                <input class="form-control" name="BranchName" placeholder="Enter branch name" />
+            </div>
+            <div class="col-md-2 align-self-center">
+                <button type="submit" class="btn btn-primary mt-4">Create</button>
+            </div>
+        </div>
+    </form>
+
+    <hr />
+
+    <form asp-action="SearchById" method="get" class="form-inline mb-3">
+        <input type="number" name="id" class="form-control mr-2" placeholder="Search by Branch ID" />
+        <button type="submit" class="btn btn-secondary">Search by ID</button>
+    </form>
+
+    <h2 class="text-center">Library Branch List</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <table class="table table-striped text-center">
+                <thead>
+                    <tr>
+                        <th>Branch ID</th>
+                        <th>Branch Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var branch in Model)
+                    {
+                        <tr>
+                            <td>@branch.LibraryBranchId</td>
+                            <td>@branch.BranchName</td>
+                            <td>
+                                <div class="d-flex justify-content-between">
+                                    <form asp-action="Update" asp-route-id="@branch.LibraryBranchId" method="post" class="d-flex">
+                                        <input type="hidden" name="LibraryBranchId" value="@branch.LibraryBranchId" />
+                                        <input class="form-control mb-1 mr-1" type="text" name="BranchName" value="@branch.BranchName" style="width: 150px;" />
+                                        <button type="submit" class="btn btn-success mb-1 mr-1">Save</button>
+                                    </form>
+
+                                    <form asp-action="Delete" asp-route-id="@branch.LibraryBranchId" method="post" class="d-inline-block">
+                                        <input type="hidden" name="id" value="@branch.LibraryBranchId" />
+                                        <button type="submit" class="btn btn-danger mb-1" onclick="return confirm('Are you sure you want to delete this branch?');">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
