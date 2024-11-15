@@ -10,6 +10,8 @@
             </div>
             <div class="col-md-2 align-self-center">
                 <button type="submit" class="btn btn-primary mt-4">Create</button>
+                <!-- 调试信息 -->
+                <span>@ViewData["CreateDebugMessage"]</span>
             </div>
         </div>
     </form>
@@ -38,20 +40,22 @@
                     {
                         <tr>
                             <td>@branch.LibraryBranchId</td>
-                            <td>@branch.BranchName</td>
                             <td>
-                                <div class="d-flex justify-content-between">
-                                    <form asp-action="Update" asp-route-id="@branch.LibraryBranchId" method="post" class="d-flex">
-                                        <input type="hidden" name="LibraryBranchId" value="@branch.LibraryBranchId" />
-                                        <input class="form-control mb-1 mr-1" type="text" name="BranchName" value="@branch.BranchName" style="width: 150px;" />
-                                        <button type="submit" class="btn btn-success mb-1 mr-1">Save</button>
-                                    </form>
-
-                                    <form asp-action="Delete" asp-route-id="@branch.LibraryBranchId" method="post" class="d-inline-block">
-                                        <input type="hidden" name="id" value="@branch.LibraryBranchId" />
-                                        <button type="submit" class="btn btn-danger mb-1" onclick="return confirm('Are you sure you want to delete this branch?');">Delete</button>
-                                    </form>
-                                </div>
+                                <!-- Update form to edit Branch Name -->
+                                <form asp-action="Update" asp-route-id="@branch.LibraryBranchId" method="post" class="d-inline-flex">
+                                    <input class="form-control mb-1 mr-1" type="text" name="BranchName" value="@branch.BranchName" style="width: 150px;" />
+                                    <button type="submit" class="btn btn-success mb-1">Save</button>
+                                    <!-- 调试信息 -->
+                                    <span>@ViewData["UpdateDebugMessage"]</span>
+                                </form>
+                            </td>
+                            <td>
+                                <!-- Delete form to delete the branch -->
+                                <form asp-action="Delete" asp-route-id="@branch.LibraryBranchId" method="post" class="d-inline-block">
+                                    <button type="submit" class="btn btn-danger mb-1" onclick="return confirm('Are you sure you want to delete this branch?');">Delete</button>
+                                    <!-- 调试信息 -->
+                                    <span>@ViewData["DeleteDebugMessage"]</span>
+                                </form>
                             </td>
                         </tr>
                     }
@@ -60,4 +64,7 @@
         </div>
     </div>
 </div>
+
+
+
 

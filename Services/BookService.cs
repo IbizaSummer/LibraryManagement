@@ -30,8 +30,14 @@ namespace LibraryManagement.Services
 
         public void UpdateBook(Book book)
         {
-            _context.Books.Update(book);
-            _context.SaveChanges();
+            var existingBook = _context.Books.Find(book.BookId);
+            if (existingBook != null)
+            {
+                existingBook.Title = book.Title;
+                existingBook.AuthorId = book.AuthorId;
+                existingBook.LibraryBranchId = book.LibraryBranchId;
+                _context.SaveChanges();
+            }
         }
 
         public void DeleteBook(int id)
@@ -43,5 +49,17 @@ namespace LibraryManagement.Services
                 _context.SaveChanges();
             }
         }
+
+        public List<Author> GetAuthors()
+        {
+            return _context.Authors.ToList();
+        }
+
+        public List<LibraryBranch> GetLibraryBranches()
+        {
+            return _context.LibraryBranches.ToList();
+        }
     }
+
+
 }

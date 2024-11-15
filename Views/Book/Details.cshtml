@@ -2,35 +2,50 @@
 
 <div class="container">
     <h3 class="text-center">Add New Book</h3>
-    <form asp-action="Create" method="post">
-        <div class="form-row d-flex justify-content-between">
-            <div class="col-md-3">
+    <form action="/Book/Create" method="post">
+        <div class="form-row">
+            <!-- Title -->
+            <div class="form-group col-md-4">
                 <label>Title</label>
                 <input class="form-control" name="Title" placeholder="Enter book title" />
             </div>
-            <div class="col-md-3">
-                <label>Author ID</label>
-                <input class="form-control" name="AuthorId" placeholder="Enter author ID" />
+            <!-- Author -->
+            <div class="form-group col-md-4">
+                <label>Author</label>
+                <select class="form-control" name="AuthorId">
+                    @foreach (var author in ViewBag.Authors)
+                    {
+                        <option value="@author.AuthorId">
+                            @author.Name
+                        </option>
+                    }
+                </select>
             </div>
-            <div class="col-md-3">
-                <label>Library Branch ID</label>
-                <input class="form-control" name="LibraryBranchId" placeholder="Enter library branch ID" />
-            </div>
-            <div class="col-md-2 align-self-center">
-                <button type="submit" class="btn btn-primary mt-4">Create</button>
+            <!-- Library Branch -->
+            <div class="form-group col-md-4">
+                <label>Library Branch</label>
+                <select class="form-control" name="LibraryBranchId">
+                    @foreach (var branch in ViewBag.LibraryBranches)
+                    {
+                        <option value="@branch.LibraryBranchId">
+                            @branch.BranchName
+                        </option>
+                    }
+                </select>
             </div>
         </div>
+        <button type="submit" class="btn btn-primary mt-3">Create</button>
     </form>
 
     <hr />
 
-    <form asp-action="SearchById" method="get" class="form-inline mb-3">
+    <!-- Search by ID -->
+    <form action="/Book/SearchById" method="get" class="form-inline mb-3">
         <input type="number" name="id" class="form-control mr-2" placeholder="Search by Book ID" />
         <button type="submit" class="btn btn-secondary">Search by ID</button>
     </form>
 
     <h2 class="text-center">Book List</h2>
-
     <div class="row justify-content-center">
         <div class="col-md-10">
             <table class="table table-striped text-center">
@@ -38,8 +53,8 @@
                     <tr>
                         <th>Book ID</th>
                         <th>Title</th>
-                        <th>Author ID</th>
-                        <th>Library Branch ID</th>
+                        <th>Author</th>
+                        <th>Library Branch</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -49,24 +64,65 @@
                         <tr>
                             <td>@book.BookId</td>
                             <td>@book.Title</td>
-                            <td>@book.AuthorId</td>
-                            <td>@book.LibraryBranchId</td>
+                            <td>@((ViewBag.Authors as List<Author>).First(a => a.AuthorId == book.AuthorId).Name)</td>
+                            <td>@((ViewBag.LibraryBranches as List<LibraryBranch>).First(lb => lb.LibraryBranchId == book.LibraryBranchId).BranchName)</td>
                             <td>
-                                <form asp-action="Update" method="post" class="d-flex justify-content-between">
-                                    <input type="hidden" name="BookId" value="@book.BookId" />
-                                    <div class="d-flex">
-                                        <input class="form-control mb-1 mr-1" type="text" name="Title" value="@book.Title" style="width: 100px;" />
-                                        <input class="form-control mb-1 mr-1" type="number" name="AuthorId" value="@book.AuthorId" style="width: 60px;" />
-                                        <input class="form-control mb-1 mr-1" type="number" name="LibraryBranchId" value="@book.LibraryBranchId" style="width: 60px;" />
-                                    </div>
-                                    <div class="d-flex">
-                                        <button type="submit" class="btn btn-success mb-1 mr-1">Save</button>
-                                        <form asp-action="Delete" method="post" class="d-inline-block">
-                                            <input type="hidden" name="id" value="@book.BookId" />
-                                            <button type="submit" class="btn btn-danger mb-1" onclick="return confirm('Are you sure you want to delete this book?');">Delete</button>
-                                        </form>
-                                    </div>
-                                </form>
+                                <!-- Update and Delete Form in a single row -->
+                                <div class="d-flex align-items-center">
+                                    <!-- Update Form -->
+                                    <form action="/Book/Update" method="post" class="d-flex align-items-center mr-2">
+                                        <input type="hidden" name="BookId" value="@book.BookId" />
+
+                                        <!-- Title input -->
+                                        <input class="form-control mb-1 mr-1" type="text" name="Title" value="@book.Title" style="width: 120px;" />
+
+                                        <!-- Author dropdown -->
+                                        <select class="form-control mb-1 mr-1" name="AuthorId" style="width: 120px;">
+                                            @foreach (var author in (ViewBag.Authors as List<Author>) ?? new List<Author>())
+                                            {
+                                                @if (author.AuthorId == book.AuthorId)
+                                                {
+                                                    <option value="@author.AuthorId" selected>
+                                                        @author.Name
+                                                    </option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@author.AuthorId">
+                                                        @author.Name
+                                                    </option>
+                                                }
+                                            }
+                                        </select>
+
+                                        <!-- Library Branch dropdown -->
+                                        <select class="form-control mb-1 mr-1" name="LibraryBranchId" style="width: 120px;">
+                                            @foreach (var branch in (ViewBag.LibraryBranches as List<LibraryBranch>) ?? new List<LibraryBranch>())
+                                            {
+                                                @if (branch.LibraryBranchId == book.LibraryBranchId)
+                                                {
+                                                    <option value="@branch.LibraryBranchId" selected>
+                                                        @branch.BranchName
+                                                    </option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@branch.LibraryBranchId">
+                                                        @branch.BranchName
+                                                    </option>
+                                                }
+                                            }
+                                        </select>
+
+                                        <button type="submit" class="btn btn-success mb-1">Save</button>
+                                    </form>
+
+                                    <!-- Delete Form -->
+                                    <form action="/Book/Delete" method="post">
+                                        <input type="hidden" name="id" value="@book.BookId" />
+                                        <button type="submit" class="btn btn-danger mb-1" onclick="return confirm('Are you sure you want to delete this book?');">Delete</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     }

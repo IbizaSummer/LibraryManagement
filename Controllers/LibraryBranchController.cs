@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using LibraryManagement.Models;
 using LibraryManagement.Services;
+using System.Collections.Generic;
 
 namespace LibraryManagement.Controllers
 {
@@ -13,10 +14,27 @@ namespace LibraryManagement.Controllers
             _libraryBranchService = libraryBranchService;
         }
 
+        // 显示所有分支并支持在同一页面创建新分支
         public IActionResult Details()
         {
             var libraryBranches = _libraryBranchService.GetAllLibraryBranches();
             return View(libraryBranches);
+        }
+
+        // 处理在 Details 页面上的创建请求
+        [HttpPost]
+        public IActionResult Create(LibraryBranch branch)
+        {
+            if (ModelState.IsValid)
+            {
+                _libraryBranchService.CreateLibraryBranch(branch);
+                ViewData["CreateDebugMessage"] = "Branch created successfully!";
+            }
+            else
+            {
+                ViewData["CreateDebugMessage"] = "Branch creation failed!";
+            }
+            return RedirectToAction("Details");
         }
 
         public IActionResult SearchById(int id)
@@ -37,36 +55,30 @@ namespace LibraryManagement.Controllers
                 var branch = _libraryBranchService.GetLibraryBranchById(id);
                 if (branch == null)
                 {
+                    ViewData["UpdateDebugMessage"] = "Branch not found!";
                     return NotFound();
                 }
 
-                branch.BranchName = updatedBranch.BranchName;  // 更新属性
+                branch.BranchName = updatedBranch.BranchName;
                 _libraryBranchService.UpdateLibraryBranch(branch);
-                return RedirectToAction("Details", new { id = branch.LibraryBranchId });
+                ViewData["UpdateDebugMessage"] = "Branch updated successfully!";
             }
-            return View("Details", updatedBranch);
-        }
-
-        public IActionResult Delete(int id)
-        {
-            _libraryBranchService.DeleteLibraryBranch(id);
-            return RedirectToAction("Index", "Home");
-        }
-
-        public IActionResult Create()
-        {
-            return View();
+            else
+            {
+                ViewData["UpdateDebugMessage"] = "Branch update failed!";
+            }
+            return RedirectToAction("Details");
         }
 
         [HttpPost]
-        public IActionResult Create(LibraryBranch branch)
+        public IActionResult Delete(int id)
         {
-            if (ModelState.IsValid)
-            {
-                _libraryBranchService.CreateLibraryBranch(branch);
-                return RedirectToAction("Details", new { id = branch.LibraryBranchId });
-            }
-            return View(branch);
+            _libraryBranchService.DeleteLibraryBranch(id);
+            ViewData["DeleteDebugMessage"] = "Branch deleted successfully!";
+            return RedirectToAction("Details");
         }
     }
 }
+
+
+

@@ -1,5 +1,10 @@
 using LibraryManagement.Data;
 using LibraryManagement.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Services
 {
@@ -24,13 +29,28 @@ namespace LibraryManagement.Services
 
         public void CreateAuthor(Author author)
         {
+            if (author == null)
+            {
+                throw new ArgumentNullException(nameof(author));
+            }
             _context.Authors.Add(author);
             _context.SaveChanges();
         }
 
         public void UpdateAuthor(Author author)
         {
-            _context.Authors.Update(author);
+            if (author == null)
+            {
+                throw new ArgumentNullException(nameof(author));
+            }
+
+            var existingAuthor = _context.Authors.Find(author.AuthorId);
+            if (existingAuthor == null)
+            {
+                throw new KeyNotFoundException("Author not found");
+            }
+
+            existingAuthor.Name = author.Name;
             _context.SaveChanges();
         }
 

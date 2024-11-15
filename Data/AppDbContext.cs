@@ -1,26 +1,30 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using LibraryManagement.Models;
 
 namespace LibraryManagement.Data
 {
     public class AppDbContext : DbContext
     {
-        private readonly IConfiguration _configuration;
-
-        public AppDbContext(DbContextOptions<AppDbContext> options, IConfiguration configuration) : base(options)
-        {
-            _configuration = configuration;
-        }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<LibraryBranch> LibraryBranches { get; set; }
         public DbSet<Customer> Customers { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            optionsBuilder.UseSqlite(_configuration.GetConnectionString("DefaultConnection"));
+            modelBuilder.Entity<Book>()
+                .HasOne(b => b.Author)
+                .WithMany(a => a.Books)
+                .HasForeignKey(b => b.AuthorId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Book>()
+                .HasOne(b => b.LibraryBranch)
+                .WithMany(br => br.Books)
+                .HasForeignKey(b => b.LibraryBranchId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

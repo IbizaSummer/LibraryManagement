@@ -191,8 +191,8 @@
 /Users/kaiwang/Projects/LibraryManagement/obj/Debug/net9.0/LibraryM.685EF3B5.Up2Date
 /Users/kaiwang/Project/LibraryManagement/bin/Debug/net9.0/appsettings.Development.json
 /Users/kaiwang/Project/LibraryManagement/bin/Debug/net9.0/appsettings.json
-/Users/kaiwang/Project/LibraryManagement/bin/Debug/net9.0/LibraryManagement.staticwebassets.endpoints.json
 /Users/kaiwang/Project/LibraryManagement/bin/Debug/net9.0/LibraryManagement.staticwebassets.runtime.json
+/Users/kaiwang/Project/LibraryManagement/bin/Debug/net9.0/LibraryManagement.staticwebassets.endpoints.json
 /Users/kaiwang/Project/LibraryManagement/bin/Debug/net9.0/LibraryManagement
 /Users/kaiwang/Project/LibraryManagement/bin/Debug/net9.0/LibraryManagement.deps.json
 /Users/kaiwang/Project/LibraryManagement/bin/Debug/net9.0/LibraryManagement.runtimeconfig.json
@@ -301,6 +301,7 @@
 /Users/kaiwang/Project/LibraryManagement/obj/Debug/net9.0/LibraryManagement.MvcApplicationPartsAssemblyInfo.cache
 /Users/kaiwang/Project/LibraryManagement/obj/Debug/net9.0/LibraryManagement.RazorAssemblyInfo.cache
 /Users/kaiwang/Project/LibraryManagement/obj/Debug/net9.0/LibraryManagement.RazorAssemblyInfo.cs
+/Users/kaiwang/Project/LibraryManagement/obj/Debug/net9.0/LibraryManagement.sourcelink.json
 /Users/kaiwang/Project/LibraryManagement/obj/Debug/net9.0/scopedcss/Views/Shared/_Layout.cshtml.rz.scp.css
 /Users/kaiwang/Project/LibraryManagement/obj/Debug/net9.0/scopedcss/bundle/LibraryManagement.styles.css
 /Users/kaiwang/Project/LibraryManagement/obj/Debug/net9.0/scopedcss/projectbundle/LibraryManagement.bundle.scp.css
