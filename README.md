@@ -4,7 +4,7 @@
 This is a Library Management System application built using ASP.NET Core. The application features user authentication (Login, Logout, Register), and social media authentication using Google and Facebook.
 
 ## Prerequisites
-- [.NET 6 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 - Visual Studio 2022 or any code editor with .NET support (e.g., VS Code)
 - A configured Google and Facebook app for social media authentication
 - SQLite for database storage
