@@ -1,5 +1,6 @@
 using LibraryManagement.Data;
 using LibraryManagement.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Services
 {
@@ -30,15 +31,21 @@ namespace LibraryManagement.Services
 
         public void UpdateBook(Book book)
         {
-            var existingBook = _context.Books.Find(book.BookId);
-            if (existingBook != null)
+            var trackedBook = _context.Books.Local.FirstOrDefault(b => b.BookId == book.BookId);
+
+            if (trackedBook != null)
             {
-                existingBook.Title = book.Title;
-                existingBook.AuthorId = book.AuthorId;
-                existingBook.LibraryBranchId = book.LibraryBranchId;
-                _context.SaveChanges();
+                // 手动解除上下文对已跟踪实体的跟踪
+                _context.Entry(trackedBook).State = EntityState.Detached;
             }
+
+            // 标记传入的实体为已修改
+            _context.Books.Attach(book);
+            _context.Entry(book).State = EntityState.Modified;
+
+            _context.SaveChanges();
         }
+
 
         public void DeleteBook(int id)
         {
@@ -60,6 +67,4 @@ namespace LibraryManagement.Services
             return _context.LibraryBranches.ToList();
         }
     }
-
-
 }

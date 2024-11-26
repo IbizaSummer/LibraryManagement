@@ -24,7 +24,7 @@ namespace LibraryManagement.Controllers
             var customer = _customerService.GetCustomerById(id);
             if (customer == null)
             {
-                return NotFound();
+                throw new CustomerNotFoundException($"User ID {id} Not Found！");
             }
             return View("Details", new List<Customer> { customer });
         }

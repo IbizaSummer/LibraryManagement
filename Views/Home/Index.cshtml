@@ -2,6 +2,40 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to FDU Library</h1>
+<style>
+    .home-banner {
+        background: url('/images/library-background.jpg') no-repeat center center;
+        background-size: cover;
+        height: 100vh;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+    }
+
+    .home-banner h1 {
+        font-size: 4rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .home-banner p {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .home-banner .btn-primary {
+        font-size: 1.25rem;
+        padding: 10px 20px;
+        border-radius: 30px;
+    }
+</style>
+
+<div class="home-banner">
+    <h1>Welcome to FDU Library</h1>
+    <p>Your gateway to endless knowledge and resources</p>
+    <a href="/Book/Details" class="btn btn-primary">Explore Books</a>
 </div>
+

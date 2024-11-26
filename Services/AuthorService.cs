@@ -3,7 +3,6 @@ using LibraryManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Services
@@ -44,15 +43,23 @@ namespace LibraryManagement.Services
                 throw new ArgumentNullException(nameof(author));
             }
 
-            var existingAuthor = _context.Authors.Find(author.AuthorId);
-            if (existingAuthor == null)
+            // 检查上下文中的本地缓存是否已跟踪目标实体
+            var trackedAuthor = _context.Authors.Local.FirstOrDefault(a => a.AuthorId == author.AuthorId);
+
+            if (trackedAuthor != null)
             {
-                throw new KeyNotFoundException("Author not found");
+                // 手动解除上下文对已跟踪实体的跟踪
+                _context.Entry(trackedAuthor).State = EntityState.Detached;
             }
 
-            existingAuthor.Name = author.Name;
+            // 标记传入的实体为已修改
+            _context.Authors.Attach(author);
+            _context.Entry(author).State = EntityState.Modified;
+
             _context.SaveChanges();
         }
+
+
 
         public void DeleteAuthor(int id)
         {

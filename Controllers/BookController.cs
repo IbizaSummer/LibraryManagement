@@ -29,7 +29,7 @@ namespace LibraryManagement.Controllers
             var book = _bookService.GetBookById(id);
             if (book == null)
             {
-                return NotFound();
+                throw new BookNotFoundException($"Book ID {id} Not found！");
             }
             return View("Details", new List<Book> { book }); // 返回单本书籍作为列表
         }

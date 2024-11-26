@@ -1,5 +1,7 @@
 using LibraryManagement.Data;
 using LibraryManagement.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace LibraryManagement.Services
 {
     public class CustomerService
@@ -29,7 +31,17 @@ namespace LibraryManagement.Services
 
         public void UpdateCustomer(Customer customer)
         {
-            _context.Customers.Update(customer);
+            var trackedEntity = _context.ChangeTracker.Entries<Customer>()
+                .FirstOrDefault(e => e.Entity.CustomerId == customer.CustomerId);
+
+            if (trackedEntity != null)
+            {
+                // 手动分离已跟踪的实体
+                trackedEntity.State = EntityState.Detached;
+            }
+
+            // 更新实体状态
+            _context.Entry(customer).State = EntityState.Modified;
             _context.SaveChanges();
         }
 
